@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Factura PRO — Sistema de Facturación</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ════════════════
+PANTALLA DE INICIO
+══════════════════ -->
+<div id="pantalla-inicio" class="pantalla activa">
+
+  <header>
+    <div class="logo">Factura PRO</div>
+    <nav>
+      <a href="#" onclick="mostrarPantalla('pantalla-inicio')">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section class="inicio">
+    <div class="texto">
+      <h1>Bienvenido al Sistema de Facturación</h1>
+      <p>Administra todas tus facturas del día a día con un sistema diseñado para brindarte rapidez, claridad y control total de tus finanzas.</p>
+      <a href="#" class="boton" onclick="mostrarPantalla('pantalla-login')">Iniciar Sesión</a>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="servicios">
+    <h2>¿Qué puedes hacer con Factura PRO?</h2>
+    <div class="tarjetas-servicio">
+      <div class="tarjeta">
+        <span class="icono">🧾</span>
+        <h3>Facturar</h3>
+        <p>Genera facturas con todos los datos del cliente, productos, IVA .</p>
+      </div>
+      <div class="tarjeta">
+        <span class="icono">🛒</span>
+        <h3>Compras</h3>
+        <p>Registra compras a proveedores.</p>
+      </div>
+      <div class="tarjeta">
+        <span class="icono">📦</span>
+        <h3>Inventario</h3>
+        <p>Visualiza el stock actual de cada producto en tiempo real.</p>
+      </div>
+      <div class="tarjeta">
+        <span class="icono">📊</span>
+        <h3>Reportes</h3>
+        <p>Consulta todos los movimientos de compras y ventas con fechas y detalles.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contacto">
+    <p class="contact-label">Contacto</p>
+    <h2>¿Necesitas ayuda?</h2>
+    <p>Escríbenos a <span class="dorado">soporte@facturapro.ec</span> o llámanos al <span class="dorado">+593 99 999 9999</span></p>
+  </section>
+
+  <footer>
+    <p>© 2026 Factura PRO </p>
+  </footer>
+
+</div>
+
+
+<!-- ════════════════
+     PANTALLA DE LOGIN
+══════════════════ -->
+<div id="pantalla-login" class="pantalla">
+  <div class="login-contenedor">
+    <div class="login-caja">
+      <div class="login-logo">Factura <span>PRO</span></div>
+      <h2>Iniciar Sesión</h2>
+      <p class="login-sub">Ingresa tus credenciales para continuar</p>
+
+      <div id="login-error" class="login-error oculto">Usuario o contraseña incorrectos.</div>
+
+      <div class="campo">
+        <label>Usuario</label>
+        <input type="text" id="input-usuario" placeholder="Tu usuario" />
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="input-password" placeholder="••••••••" />
+      </div>
+      <button class="boton-full" onclick="verificarLogin()">Entrar al sistema</button>
+      <a href="#" class="volver" onclick="mostrarPantalla('pantalla-inicio')">← Volver al inicio</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════
+     PANTALLA DEL MENÚ PRINCIPAL
+══════════════════ -->
+<div id="pantalla-menu" class="pantalla">
+  <header>
+    <div class="logo">Factura PRO</div>
+    <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+  </header>
+
+  <section class="menu-principal">
+    <h2>¿Qué deseas hacer hoy?</h2>
+    <p class="menu-sub">Selecciona una opción para continuar</p>
+
+    <div class="menu-opciones">
+      <div class="menu-card" id="menu-card-facturar" onclick="mostrarPantalla('pantalla-factura')">
+        <span class="menu-icono">🧾</span>
+        <h3>Facturar</h3>
+        <p>Emite una nueva factura a un cliente</p>
+        <span class="menu-aviso">⚠ Sin stock disponible</span>
+      </div>
+      <div class="menu-card" onclick="mostrarPantalla('pantalla-compra')">
+        <span class="menu-icono">🛒</span>
+        <h3>Comprar</h3>
+        <p>Registra una compra a un proveedor</p>
+      </div>
+      <div class="menu-card" onclick="mostrarPantalla('pantalla-inventario')">
+        <span class="menu-icono">📦</span>
+        <h3>Ver Inventario</h3>
+        <p>Consulta el stock actual de productos</p>
+      </div>
+      <div class="menu-card" onclick="mostrarPantalla('pantalla-reportes')">
+        <span class="menu-icono">📊</span>
+        <h3>Ver Reportes</h3>
+        <p>Revisa todos los movimientos registrados</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ════════════════
+     PANTALLA PARA FACTURAR
+══════════════════ -->
+<div id="pantalla-factura" class="pantalla">
+  <header>
+    <div class="logo">Factura PRO</div>
+    <div class="nav-secundario">
+      <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
+      <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="seccion-formulario">
+    <h2>Nueva Factura</h2>
+
+    <!-- DATOS DEL CLIENTE -->
+    <div class="bloque-form">
+      <h3>Datos del Cliente</h3>
+      <div class="fila-campos">
+        <div class="campo">
+          <label>Fecha</label>
+          <input type="date" id="fac-fecha" />
+        </div>
+        <div class="campo">
+          <label>Tipo de cliente</label>
+          <select id="fac-tipo" onchange="toggleDatosCliente()">
+            <option value="datos">Con datos</option>
+            <option value="final">Consumidor Final</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="bloque-datos-cliente">
+        <div class="fila-campos">
+          <div class="campo">
+            <label>Nombre del cliente</label>
+            <input type="text" id="fac-nombre" placeholder="Juan Pérez" />
+          </div>
+          <div class="campo">
+            <label>Cédula / RUC</label>
+            <input type="text" id="fac-cedula" placeholder="1700000000" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="bloque-form">
+      <h3>Productos</h3>
+      <div class="fila-campos">
+        <div class="campo">
+          <label>Producto</label>
+          <input type="text" id="fac-producto" placeholder="Nombre del producto" />
+        </div>
+        <div class="campo">
+          <label>Cantidad</label>
+          <input type="number" id="fac-cantidad" placeholder="1" min="1" />
+        </div>
+        <div class="campo">
+          <label>Precio unitario ($)</label>
+          <input type="number" id="fac-precio" placeholder="0.00" step="0.01" />
+        </div>
+        <div class="campo">
+          <label>IVA (%)</label>
+          <select id="fac-iva">
+            <option value="0">0% — Sin IVA</option>
+            <option value="15" selected>15%</option>
+          </select>
+        </div>
+      </div>
+      <button class="boton-agregar" onclick="agregarProductoFactura()">+ Agregar producto</button>
+
+      <div id="tabla-productos-fac" class="tabla-wrap oculto">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Producto</th>
+              <th>Cant.</th>
+              <th>P. Unit.</th>
+              <th>IVA</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="body-productos-fac"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="boton-full" onclick="generarFactura()">Generar Factura</button>
+  </section>
+
+  <!-- VISTA PREVIA DE FACTURA -->
+  <section id="vista-factura" class="oculto factura-impresa">
+    <div id="fac-exito" class="alerta-exito" style="margin-bottom: 24px;">
+      Factura generada exitosamente. El inventario ha sido actualizado.
+    </div>
+
+    <div class="factura-header">
+      <div>
+        <div class="factura-empresa">FACTURA PRO S.A.</div>
+        <div class="factura-ruc">RUC: 1792000000001</div>
+        <div class="factura-dir">Av. Principal 123, Quito - Ecuador</div>
+      </div>
+      <div class="factura-num">
+        <div>FACTURA</div>
+        <div id="fac-numero">#001-001-000000001</div>
+        <div id="fac-fecha-display"></div>
+      </div>
+    </div>
+
+    <div class="factura-cliente">
+      <div><strong>Cliente:</strong> <span id="disp-nombre"></span></div>
+      <div><strong>Cédula / RUC:</strong> <span id="disp-cedula"></span></div>
+    </div>
+
+    <table class="tabla-factura">
+      <thead>
+        <tr><th>#</th><th>Producto</th><th>Cant.</th><th>P. Unit.</th><th>IVA</th><th>Total</th></tr>
+      </thead>
+      <tbody id="body-factura-final"></tbody>
+    </table>
+
+    <div class="factura-totales">
+      <div class="fila-total"><span>Subtotal:</span><span id="fac-subtotal"></span></div>
+      <div class="fila-total"><span>IVA:</span><span id="fac-iva-total"></span></div>
+      <div class="fila-total gran-total"><span>TOTAL:</span><span id="fac-total-final"></span></div>
+    </div>
+
+    <div class="factura-pie">Gracias por su compra — Factura PRO</div>
+
+    <div class="botones-factura">
+      <button class="boton-full" onclick="nuevaFactura()">Emitir otra factura</button>
+      <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Volver al menú</button>
+    </div>
+  </section>
+</div>
+
+
+<!-- ════════════════
+     PANTALLA 5: COMPRAS
+══════════════════ -->
+<div id="pantalla-compra" class="pantalla">
+  <header>
+    <div class="logo">Factura PRO</div>
+    <div class="nav-secundario">
+      <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
+      <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="seccion-formulario">
+    <h2>Registrar Compra</h2>
+
+    <div class="bloque-form">
+      <h3>Datos de la compra</h3>
+      <div class="fila-campos">
+        <div class="campo">
+          <label>Fecha</label>
+          <input type="date" id="com-fecha" />
+        </div>
+        <div class="campo">
+          <label>Proveedor</label>
+          <input type="text" id="com-proveedor" placeholder="Nombre del proveedor" />
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label>Producto</label>
+          <input type="text" id="com-producto" placeholder="Nombre del producto" />
+        </div>
+        <div class="campo">
+          <label>Cantidad</label>
+          <input type="number" id="com-cantidad" placeholder="1" min="1" />
+        </div>
+        <div class="campo">
+          <label>Valor unitario ($)</label>
+          <input type="number" id="com-valor" placeholder="0.00" step="0.01" />
+        </div>
+      </div>
+
+      <button class="boton-agregar" onclick="agregarProductoCompra()">+ Agregar producto</button>
+
+      <div id="tabla-productos-com" class="tabla-wrap oculto">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Producto</th><th>Cantidad</th><th>Val. Unit.</th><th>Subtotal</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="body-productos-com"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="boton-full" onclick="registrarCompra()">Registrar Compra</button>
+
+    <div id="com-exito" class="alerta-exito oculto">
+       Compra registrada exitosamente. El inventario ha sido actualizado.
+      <br/><br/>
+      <button class="boton-full" onclick="nuevaCompra()">Registrar otra compra</button>
+    </div>
+  </section>
+</div>
+
+
+<!-- ════════════════
+ PANTALLA DE INVENTARIO
+══════════════════ -->
+<div id="pantalla-inventario" class="pantalla">
+  <header>
+    <div class="logo">Factura PRO</div>
+    <div class="nav-secundario">
+      <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
+      <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="seccion-formulario">
+    <h2>Inventario actual</h2>
+    <p class="menu-sub">Stock disponible de todos los productos</p>
+
+    <div id="inventario-contenido" class="tabla-wrap">
+      <table id="tabla-inventario">
+        <thead>
+          <tr><th>#</th><th>Producto</th><th>Stock disponible</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="body-inventario"></tbody>
+      </table>
+      <p id="inv-vacio" class="oculto estado-vacio">No hay productos en el inventario aún. Registra compras para comenzar.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════
+PANTALLA DE LOS REPORTES
+══════════════════ -->
+<div id="pantalla-reportes" class="pantalla">
+  <header>
+    <div class="logo">Factura PRO</div>
+    <div class="nav-secundario">
+      <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
+      <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <section class="seccion-formulario">
+    <h2>Reportes de Movimientos</h2>
+
+    <!-- FILTROS -->
+    <div class="filtros-reporte">
+      <button class="btn-filtro activo" onclick="filtrarReporte('todos', this)">Todos</button>
+      <button class="btn-filtro" onclick="filtrarReporte('venta', this)">Ventas</button>
+      <button class="btn-filtro" onclick="filtrarReporte('compra', this)">Compras</button>
+    </div>
+
+    <div class="tabla-wrap">
+      <table id="tabla-reportes">
+        <thead>
+          <tr><th>Fecha</th><th>Tipo</th><th>Contraparte</th><th>Producto</th><th>Cantidad</th><th>Total</th></tr>
+        </thead>
+        <tbody id="body-reportes"></tbody>
+      </table>
+      <p id="rep-vacio" class="oculto estado-vacio">No hay movimientos registrados todavía.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════
+SCRIPT JAVASCRIPT
+══════════════════ -->
+<script src="script.js"></script> 
+
+</body>
+</html>
