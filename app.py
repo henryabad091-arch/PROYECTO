@@ -10,12 +10,13 @@ import inventario
 import reportes
 import credenciales
 import caja
- 
+
+#Servidor Flask
 app = Flask(__name__, static_folder=".", static_url_path="")
  
  
 #SERVIR EL FRONTEND
-@app.route("/")
+@app.route("/") #@APP.route("/") indica que esta func.se ejecuta cuando se accede a la raíz del sitio.
 def home():
     return app.send_static_file("index.html")
  
@@ -34,7 +35,7 @@ def api_login():
  
  
 #INVENTARIO
-@app.route("/api/inventario", methods=["GET"])
+@app.route("/api/inventario", methods=["GET"]) 
 def api_inventario():
     resultado = inventario.obtener_inventario()
     return jsonify(resultado)
@@ -100,7 +101,7 @@ def api_caja_iniciar():
     return jsonify(resultado)
  
  
-#CAJA — reiniciar el capital (por si se equivocaron o quieren empezar de nuevo)
+#CAJA 
 @app.route("/api/caja/reiniciar", methods=["POST"])
 def api_caja_reiniciar():
     datos_in = request.get_json(force=True) or {}
@@ -116,7 +117,8 @@ def api_caja_reiniciar():
 if __name__ == "__main__":
     print(" ")
     print("=" * 55)
-    print("   FACTURA PRO corriendo en http://127.0.0.1:5000")
+    #Sirve para indicar al usuario dónde puede acceder a la aplicación.
+    print("   FACTURA PRO corriendo en http://127.0.0.1:5000") 
     print("=" * 55)
     app.run(debug=True)
  

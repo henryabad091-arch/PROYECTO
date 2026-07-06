@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<!-- ════════════════
-PANTALLA DE INICIO
-══════════════════ -->
+<!--PANTALLA DE INICIO -->
 <div id="pantalla-inicio" class="pantalla activa">
 
   <header>
@@ -71,9 +69,7 @@ PANTALLA DE INICIO
 </div>
 
 
-<!-- ════════════════
-     PANTALLA DE LOGIN
-══════════════════ -->
+<!--PANTALLA DE LOGIN-->
 <div id="pantalla-login" class="pantalla">
   <div class="login-contenedor">
     <div class="login-caja">
@@ -98,12 +94,11 @@ PANTALLA DE INICIO
 </div>
 
 
-<!-- ════════════════
-     PANTALLA DEL MENÚ PRINCIPAL
-══════════════════ -->
+<!--PANTALLA DEL MENÚ PRINCIPAL-->
 <div id="pantalla-menu" class="pantalla">
   <header>
     <div class="logo">Factura PRO</div>
+    <div class="caja-display" id="caja-display-menu"> Caja: $0.00</div>
     <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
   </header>
 
@@ -138,12 +133,11 @@ PANTALLA DE INICIO
 </div>
 
 
-<!-- ════════════════
-     PANTALLA PARA FACTURAR
-══════════════════ -->
+<!--PANTALLA PARA FACTURAR-->
 <div id="pantalla-factura" class="pantalla">
   <header>
     <div class="logo">Factura PRO</div>
+    <div class="caja-display" id="caja-display-factura"> Caja: $0.00</div>
     <div class="nav-secundario">
       <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
       <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
@@ -278,12 +272,11 @@ PANTALLA DE INICIO
 </div>
 
 
-<!-- ════════════════
-     PANTALLA 5: COMPRAS
-══════════════════ -->
+<!--PANTALLA 5: COMPRAS -->
 <div id="pantalla-compra" class="pantalla">
   <header>
     <div class="logo">Factura PRO</div>
+    <div class="caja-display" id="caja-display-compra"> Caja: $0.00</div>
     <div class="nav-secundario">
       <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
       <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
@@ -346,12 +339,11 @@ PANTALLA DE INICIO
 </div>
 
 
-<!-- ════════════════
- PANTALLA DE INVENTARIO
-══════════════════ -->
+<!--PANTALLA DE INVENTARIO-->
 <div id="pantalla-inventario" class="pantalla">
   <header>
     <div class="logo">Factura PRO</div>
+    <div class="caja-display" id="caja-display-inventario"> Caja: $0.00</div>
     <div class="nav-secundario">
       <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
       <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
@@ -374,12 +366,11 @@ PANTALLA DE INICIO
   </section>
 </div>
 
-<!-- ════════════════
-PANTALLA DE LOS REPORTES
-══════════════════ -->
+<!--PANTALLA DE LOS REPORTES-->
 <div id="pantalla-reportes" class="pantalla">
   <header>
     <div class="logo">Factura PRO</div>
+    <div class="caja-display" id="caja-display-reportes">Caja: $0.00</div>
     <div class="nav-secundario">
       <button class="btn-nav" onclick="mostrarPantalla('pantalla-menu')">← Menú</button>
       <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
@@ -408,9 +399,22 @@ PANTALLA DE LOS REPORTES
   </section>
 </div>
 
-<!-- ════════════════
-SCRIPT JAVASCRIPT
-══════════════════ -->
+<!--CAPITAL INICIAL DE LA CAJA-->
+
+<div id="modal-caja" class="modal-overlay oculto">
+  <div class="modal-caja-caja">
+    <h2>Capital inicial del negocio</h2>
+    <p class="menu-sub">Ingresa con cuánto dinero arranca tu negocio.</p>
+    <div class="campo">
+      <label>Monto inicial ($)</label>
+      <input type="number" id="input-caja-inicial" placeholder="0.00" step="0.01" min="0" />
+    </div>
+    <button class="boton-full" onclick="iniciarCaja()">Guardar e iniciar caja</button>
+  </div>
+</div>
+
+<!--SCRIPT JAVASCRIPT-->
+
 <script src="script.js"></script> 
 
 </body>

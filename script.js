@@ -1,9 +1,5 @@
-/* ================================================
-   FACTURA PRO — SCRIPT.JS
-   Conecta los botones de index.html con el servidor Flask (app.py).
-   ================================================ */
-   
-const API = "/api";
+/* FACTURA PRO — SCRIPT.JS
+   Conecta los botones de index.html con el servidor Flask (app.py)
 
 /* Estado temporal en el navegador: lo que el usuario
    va agregando a la factura/compra ANTES de enviarla
@@ -11,12 +7,19 @@ const API = "/api";
 let productosFactura = [];
 let productosCompra = [];
 
-/* ════════════════
-   NAVEGACIÓN ENTRE PANTALLAS
-════════════════ */
+/*NAVEGACIÓN ENTRE PANTALLAS */
 function mostrarPantalla(id) {
   document.querySelectorAll(".pantalla").forEach((p) => p.classList.remove("activa"));
   document.getElementById(id).classList.add("activa");
+
+  const pantallasConCaja = [
+    "pantalla-menu",
+    "pantalla-factura",
+    "pantalla-compra",
+    "pantalla-inventario",
+    "pantalla-reportes",
+  ];
+  if (pantallasConCaja.includes(id)) cargarCaja();
 
   if (id === "pantalla-inventario") cargarInventario();
   if (id === "pantalla-reportes") cargarReportes("todos");
@@ -25,9 +28,7 @@ function mostrarPantalla(id) {
   window.scrollTo(0, 0);
 }
 
-/* ════════════════
-   LOGIN
-════════════════ */
+/* LOGIN*/
 async function verificarLogin() {
   const usuario = document.getElementById("input-usuario").value;
   const contrasena = document.getElementById("input-password").value;
@@ -60,9 +61,7 @@ function cerrarSesion() {
   mostrarPantalla("pantalla-inicio");
 }
 
-/* ════════════════
-   MENÚ PRINCIPAL 
-════════════════ */
+/* MENÚ PRINCIPAL */
 async function actualizarEstadoMenu() {
   const card = document.getElementById("menu-card-facturar");
   try {
@@ -81,9 +80,7 @@ async function actualizarEstadoMenu() {
   }
 }
 
-/* ════════════════
-   FACTURAR
-════════════════ */
+/* FACTURA*/
 function toggleDatosCliente() {
   const tipo = document.getElementById("fac-tipo").value;
   document.getElementById("bloque-datos-cliente").style.display =
@@ -163,6 +160,7 @@ async function generarFactura() {
 
     if (!data.ok) return alert(data.error || "No se pudo generar la factura.");
 
+    actualizarCajaDisplay(data.caja);
     mostrarFacturaGenerada(data);
   } catch (e) {
     alert("No se pudo conectar con el servidor. ¿Está corriendo app.py?");
@@ -207,9 +205,7 @@ function nuevaFactura() {
   document.querySelector("#pantalla-factura .seccion-formulario").classList.remove("oculto");
 }
 
-/* ════════════════
-   REGISTRAR COMPRA
-════════════════ */
+/*REGISTRAR COMPRA*/
 function agregarProductoCompra() {
   const nombre = document.getElementById("com-producto").value.trim();
   const cantidad = parseInt(document.getElementById("com-cantidad").value, 10);
@@ -281,6 +277,7 @@ async function registrarCompra() {
 
     if (!data.ok) return alert(data.error || "No se pudo registrar la compra.");
 
+    actualizarCajaDisplay(data.caja);
     document.getElementById("com-exito").classList.remove("oculto");
   } catch (e) {
     alert("No se pudo conectar con el servidor. ¿Está corriendo app.py?");
@@ -295,9 +292,7 @@ function nuevaCompra() {
   document.getElementById("com-exito").classList.add("oculto");
 }
 
-/* ════════════════
-   INVENTARIO
-════════════════ */
+/* INVENTARIO */
 async function cargarInventario() {
   const tbody = document.getElementById("body-inventario");
   const vacio = document.getElementById("inv-vacio");
@@ -341,9 +336,7 @@ async function cargarInventario() {
   }
 }
 
-/* ════════════════
-   REPORTES
-════════════════ */
+/* REPORTES */
 async function cargarReportes(filtro) {
   const tbody = document.getElementById("body-reportes");
   const vacio = document.getElementById("rep-vacio");
@@ -386,6 +379,52 @@ function filtrarReporte(tipo, btn) {
   document.querySelectorAll(".btn-filtro").forEach((b) => b.classList.remove("activo"));
   btn.classList.add("activo");
   cargarReportes(tipo);
+}
+
+/*CAJA (DINERO DEL NEGOCIO */
+async function cargarCaja() {
+  try {
+    const resp = await fetch(`${API}/caja`);
+    const data = await resp.json();
+
+    actualizarCajaDisplay(data.caja);
+
+    if (!data.iniciada) {
+      document.getElementById("modal-caja").classList.remove("oculto");
+    }
+  } catch (e) {
+    /* si falla la conexión, dejamos el valor como esté */
+  }
+}
+
+function actualizarCajaDisplay(monto) {
+  document.querySelectorAll(".caja-display").forEach((el) => {
+    el.textContent = ` Caja: $${monto.toFixed(2)}`;
+  });
+}
+
+async function iniciarCaja() {
+  const input = document.getElementById("input-caja-inicial");
+  const monto = parseFloat(input.value);
+
+  if (isNaN(monto) || monto < 0) return alert("Ingresa un monto inicial válido.");
+
+  try {
+    const resp = await fetch(`${API}/caja/iniciar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ monto }),
+    });
+    const data = await resp.json();
+
+    if (!data.ok) return alert(data.error || "No se pudo iniciar la caja.");
+
+    document.getElementById("modal-caja").classList.add("oculto");
+    input.value = "";
+    actualizarCajaDisplay(data.caja);
+  } catch (e) {
+    alert("No se pudo conectar con el servidor. ¿Está corriendo app.py?");
+  }
 }
 
 /* ════════════════
