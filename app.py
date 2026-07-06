@@ -117,7 +117,6 @@ def api_caja_reiniciar():
 if __name__ == "__main__":
     print(" ")
     print("=" * 55)
-    #Sirve para indicar al usuario dónde puede acceder a la aplicación.
     print("   FACTURA PRO corriendo en http://127.0.0.1:5000") 
     print("=" * 55)
     app.run(debug=True)

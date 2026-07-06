@@ -1,5 +1,7 @@
 /* FACTURA PRO — SCRIPT.JS
-   Conecta los botones de index.html con el servidor Flask (app.py)
+   Conecta los botones de index.html con el servidor Flask (app.py) */
+
+const API = "/api";
 
 /* Estado temporal en el navegador: lo que el usuario
    va agregando a la factura/compra ANTES de enviarla
